@@ -1,0 +1,64 @@
+
+.boxArea{
+    position: relative;
+    border-style: solid;
+    border-color: aqua;
+    grid-area: 2/2/2/2; 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    align-content: center;
+    justify-content: center;
+}
+.cont-area{
+    position: relative;
+    display: grid;
+    grid-template-columns: 10px auto 10px;
+    grid-template-rows: 10px auto minmax(10px , 10px) ;
+    align-content: center;
+    justify-content: center;
+}
+.area {
+    position: relative;
+    border-style: solid;
+    border-color: aqua;
+    grid-area: 2/2/2/2; 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    align-content: center;
+    justify-content: center;
+}
+.side{
+    position: relative;
+    width: auto;
+    border-style: solid;
+    border-color: black;
+    
+}
+#a, #c, #f {
+    visibility: hidden;
+}
+#north {
+    width: 100%;
+}
+
+
+#south{
+    width: 100%;
+}
+#east {
+    height: 100%;
+}
+
+
+#west{
+    height: 100%;
+}
+.formHouse{
+    margin-left: 45px;
+    margin-top: 25px;
+    display: flex;
+    gap:10px;
+    align-items: center;
+}
