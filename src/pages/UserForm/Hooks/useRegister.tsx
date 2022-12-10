@@ -1,36 +1,42 @@
 import { useEffect, useState } from "react"
-import {  UseregI, NewuserI, ErrorI } from "../../../models/userInterface";
-import { registerAuth } from "../utilitis/registerAuth";
+import {  UseregI, ErrorI } from "../../../models/userInterface";
 import { useDispatch } from "react-redux";
-import Users from '../../components/data/users'
-export const userAdapter = (userInput : UseregI ) =>{
-    let newUser: NewuserI = {
-        fName : userInput.firstName.value,
-        lName : userInput.lastName.value,
-        email : userInput.email.value,
-        pasword : userInput.password.value,
-        cPasword : userInput.confirmPassword.value
+import { createUser } from "../../../reducers/userSlice";
+import { registerAdapter } from "../../../addapters/registerAdapter";
+import { userAdapter } from "../../../addapters/userAdapter";
+import { registerAuthentify } from "../../utilitis/registerAuth";
+
+export const useRegister = (handleError: any) =>{
+    const [values, setValues] = useState<UseregI | undefined>(undefined)
+    const [errors, setErrors] = useState<ErrorI>( {
+        error: {
+            state: false,
+            message: ''
+        }
+    })
+    const dispatch = useDispatch();
+   
+    async function comprobation(){
+        if(values !==undefined){
+            const errorAuth = await registerAuthentify(registerAdapter(values));
+            if (!errorAuth.state){
+                dispatch(createUser(userAdapter(values)))
+            }
+            else {
+                setErrors({...errors, error:errorAuth});
+                handleError();
+                console.log('si')
+            }
+            
+        }
     }
-    return newUser
-}
-export const useRegister = () =>{
-    const [registerValues, setRegisterValues] = useState<EventTarget & UseregI | undefined>(undefined);
-    const [errors, setErrors] = useState<ErrorI | undefined>(undefined)
-    const dispatch = useDispatch()
- 
-    const handleSubmit= (e: React.SyntheticEvent) =>{
+    const handleSubmit= async (e: React.SyntheticEvent) =>{
         e.preventDefault()
         let target = e.target as typeof e.target & UseregI;
-        let registerValidation = new registerAuth(userAdapter(target));
-        setErrors(registerValidation.getRegisterAuth())
-        registerValues
+        setValues(target)
     }
-    
     useEffect(()=>{
-        if (errors?.confirmPaswordError == false && errors.fieldsError == false){
-      
-        }
-    },[errors])
+        comprobation();
+    },[values])
     return {handleSubmit, errors}
-}
-
+}/* convertir los inputs a componentes mas chicos que recviban props */

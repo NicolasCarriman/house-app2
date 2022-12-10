@@ -1,6 +1,6 @@
 import { useContext,createContext } from "react";
 
-import { showHouseViews, ShowViewsType,slogantxts, buttonElement } from './viewType';
+import { showHouseViews, ShowViewsType, slogantxts } from './viewType';
 
 
 export interface showInterface{
@@ -10,7 +10,8 @@ export interface showInterface{
 export const ViewsContext = createContext<showInterface>({
   showViews: showHouseViews,
   setshowViews: () => {}
-})
+});
+
 export const useViewContext = () => useContext(ViewsContext)
 
 export interface TxtSloganInterface{

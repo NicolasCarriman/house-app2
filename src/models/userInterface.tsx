@@ -16,6 +16,8 @@ export interface NewuserI extends userI{
     cPasword : string
 }
 export interface ErrorI{
-        fieldsError: boolean | null;
-        confirmPaswordError: boolean;
+    error: {
+        state: boolean;
+        message: string;
+    }
 }

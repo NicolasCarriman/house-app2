@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box,Button,Image,Text } from '@chakra-ui/react'
 import { chakra} from '@chakra-ui/react';
 import { motion, isValidMotionProp } from 'framer-motion';
@@ -7,9 +7,18 @@ import { UserFormLogin } from './userLogin'
 import house1 from '../../addons/house1.jpg'
 import { UserFormRegister } from './userRegister'
 import { useForm } from './Hooks/useForm';
+import { ErrorI } from '../../models/userInterface';
 
 export default function UserFormPage(){
-    const {form, animateBox, fontCont, handleClick} = useForm()
+
+    const {form, handleClick} = useForm()
+    const [errors, setErrors] = useState<ErrorI>({error:{
+        state: false,
+        message: ''
+    }})
+    const handleError = (e: React.SyntheticEvent) =>{
+        setErrors(errors =>({...errors, error: {state: true, message:''}}))
+    }
     const ChakraBox = chakra(motion.div, {
         shouldForwardProp: (prop) => isValidMotionProp(prop) || prop === 'children',
         });
@@ -28,28 +37,35 @@ export default function UserFormPage(){
                 gap='20px'
             >
                     <ChakraBox 
-                        ref={fontCont}
-                        className='formCont'
-                        gap='10px'
-                        overflow='hidden'
-                        borderStyle='none'
-                        display='flex'
-                        flexDir='column-reverse' 
-                        height='auto'
-                        minH='65vh'
-                        w='auto' 
-                        bgColor='#0e191c85'
-                        alignItems='center'
-                        backdropFilter='auto' 
-                        backdropBlur='6px'
-                        boxShadow='1px 1px 0px 0px #424242, -1px -1px 0px 0px #404040, 0px 0px 15px 8px #0000009c;'
-                        p='6'
-                        rounded='md'
-                        animate={animateBox}
-                        transition={{
-                            duration: '1',
-                            ease: "easeInOut",
-                        }}
+                    backdropFilter='auto' 
+                    backdropBlur='6px'
+                    gap='10px'
+                    overflow='hidden'
+                    borderStyle='none'
+                    display='flex'
+                    flexDir='column-reverse' 
+                    height='auto'
+                    minH='65vh'
+                    w='auto' 
+                    bgColor='#0e191c85'
+                    alignItems='center'
+                    boxShadow='1px 1px 0px 0px #424242, -1px -1px 0px 0px #404040, 0px 0px 15px 8px #0000009c;'
+                    p='6'
+                    rounded='md'
+                    animate={
+                        errors.error.state?
+                        {
+                            backgroundColor: 'rgba(90 8 8 0.63)'
+                        }: 
+                        {
+                            opacity:[0,1],
+                            transform:['translateX(-50px)','translateX(10px)','translateX(0px)']
+                        }
+                    }
+                    transition={{
+                        duration: '0.8',
+                        ease: "easeInOut",
+                    }}
                     >
                         <Box 
                             className='textLoginCont'
@@ -76,7 +92,7 @@ export default function UserFormPage(){
                                 {form ?
                                      <UserFormLogin handleClick={handleClick}/>
                                 :
-                                     <UserFormRegister/>
+                                     <UserFormRegister handleError= {handleError}/>
                                  }
                         </Box>
                     </ChakraBox>
